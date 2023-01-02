@@ -1,4 +1,5 @@
 var express = require("express");
+var path = require('path'); 
 var router = express.Router();
 const db = require("../models/userData"); //資料庫
 
@@ -95,5 +96,5 @@ router.get("/rank", async function (req, res) {
 router.get("/0", async function (req, res) {
   res.status(200).send('what???');
 });
-router.get('/download', (req, res) => res.download('./mouse.pdf'))
+router.get('/download', (req, res) => res.download(path.join(__dirname, 'mouse.pdf')))
 module.exports = router;
