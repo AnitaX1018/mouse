@@ -438,7 +438,12 @@
 
         //遊戲結束
         function game_stop(){
-            if(score<0) score=0;
+            if(score<0){
+                alert("分數是負的ㄟ，請加油!!");
+                score=0;
+            }else{
+                alert("您獲得 "+score+" 分!!");
+            }
             if(parseInt(point)){
                 point=parseInt(point)+score;
             }else point+=score;
