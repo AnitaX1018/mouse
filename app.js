@@ -10,7 +10,7 @@ var usersRouter = require("./routes/users");
 var app = express();
 //引入設定檔
 const config = require("./config/config");
-app.get('/download', (req, res) => res.download(path.join(__dirname, './route/mouse.pdf')))
+app.get('/download', (req, res) => res.download(path.join(__dirname, './routes/mouse.pdf')))
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
