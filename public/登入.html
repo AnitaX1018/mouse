@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+    <style>
+        * {
+            font-family: 微軟正黑體;
+        }
+
+        body {
+            background-repeat: no-repeat;
+            background: url(grass.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment:fixed
+        }
+
+        .loginname {
+            position: relative;
+            margin: auto;
+            top: 100px;
+            text-align: center;
+            color: white;
+        }
+
+        #username,#password,h3,#fullname,#comfirm_password,#username2,#password2 {
+            width: 200px;
+            height: 20px;
+            margin: 10px;
+            color: #556B2F;
+        }
+
+        h5 {
+            margin: 20px;
+            color: #a3a2a3;
+        }
+
+        h5:hover {
+            color: black;
+        }
+
+        #container1,#container2 {
+            margin: 50px;
+            padding: 10px;
+            width: 230px;
+            height: 300px;
+            background-color: white;
+            border-radius: 5px;
+            border-top: 10px solid #556B2F;
+            box-shadow: 0 0px 70px rgba(0, 0, 0, 0.1);
+
+            /*定位對齊*/
+            position: relative;
+            margin: auto;
+            top: 100px;
+            text-align:center;  
+        }
+
+        
+        .submit {
+            color: white;
+            background: #556B2F;
+            width: 200px;
+            height: 30px;
+            margin: 10px;
+            padding: 5px;
+            border-radius: 5px;
+            border: 0px;
+        }
+
+        .submit:hover {
+            background: #3c4b21;
+        }
+
+        #container2 {
+            visibility: hidden;
+            /*剛開始消失*/
+        }
+
+        input {
+            padding: 5px;
+            border: none;
+            border: solid 1px #ccc;
+            border-radius: 5px;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script>
+        function show_hide() {
+            var login = document.getElementById("container1");
+            var signup = document.getElementById("container2");
+            var copyright = document.getElementById("copyright");
+
+            if (login.style.display === "none") {
+                login.style.display = "block";  //lonin出現
+                document.getElementById("username").value = "";
+                document.getElementById("password").value = "";
+                signup.style.display = "none";  //signup消失
+                copyright.style.margin = "200px 0px 0px 0px";
+            } else {
+                login.style.display = "none";   //login消失
+                signup.style.display = "block"; //signup出現
+                signup.style.visibility = "visible";
+                copyright.style.margin = "200px 0px 0px 0px";
+
+                document.getElementById("fullname").value = "";
+                document.getElementById("username2").value = "";
+                document.getElementById("password2").value = "";
+                document.getElementById("comfirm_password").value = "";
+            }
+        }
+        function login() {//登入
+            var usernamec=document.getElementById("username").value;
+            var passwordc=document.getElementById("password").value;
+
+            if(usernamec!="" && passwordc!=""){
+                //傳送輸入資料至後端
+                $.get('/login',{username:usernamec,password:passwordc},function(res){
+
+                    if(res=="ok"){//若帳號存在
+                        //跳轉至主頁面
+                        $(location).attr("href","index.html");
+                        localStorage.setItem("mouse_user",usernamec);
+                    }
+                    else{
+                        alert("登入失敗，請檢查帳號密碼");
+                    }
+                
+                })
+            }
+            else alert("請檢查輸入...")
+            
+        }
+        function register(){//註冊
+            var usernamec=document.getElementById("username2").value;
+            var passwordc=document.getElementById("password2").value;
+            if(usernamec!=""&& passwordc!=""){
+                //傳送註冊資料至後端
+                $.post('/register',{username:usernamec,password:passwordc},function(res){
+                    //res為接受後端 index.js回傳的資料結果
+
+                    if(res=="ok"){//若註冊成功
+                        alert("註冊成功，請回登入頁面。");
+                    }
+                    else{
+                        alert("註冊失敗，帳號已重複");
+                    }
+
+                })
+            }else alert("請檢察輸入...")
+        }
+    </script>
+
+</head>
+
+<body>
+    <div class="loginname">
+        <h2>玩家登入</h2>
+    </div>
+
+    <!-- 登入 -->
+    <div class="login_page">
+        <div id="container1">
+
+            <div>
+
+                <h3>Login</h3>
+                <!-- 後端 -->
+
+                    <input type="text" id="username" name="username" placeholder="帳號" required>
+                    <div class="tab"></div>
+                    <input type="password" id="password" name="password" placeholder="密碼" required>
+                    <div class="tab"></div>
+                    <input type="submit" value="登入" class="submit"
+                        onclick="login()"><!--確認格式-->
+
+
+                <h5 onclick="show_hide()">沒有帳號?</h5>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- 註冊 -->
+        <div id="container2">
+
+            <div>
+
+                <h3>Sign Up</h3>
+
+                <!-- 後端 -->
+
+                    <input type="text" id="username2" name="username" placeholder="帳號" required>
+                    <div class="tab"></div>
+                    <input type="password" id="password2" name="password" placeholder="密碼" required>
+                    <div class="tab"></div>
+                    <input type="submit" value="註冊" class="submit" onclick="register()">
+
+
+                <h5 onclick="show_hide()">登入帳號</h5>
+
+            </div>
+        </div>
+
+</body>
+
+</body>
+
+</html>

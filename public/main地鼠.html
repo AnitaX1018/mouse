@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" ,content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;" ,name="viewport" />
+    <link rel="shortcut icon" href="#"/>
+    <title>game</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <style>
+        *{
+            font-family: "cwTeXYen", sans-serif;
+            font-weight: bolder;
+        }
+
+        .container {
+            position: absolute;
+            left: 27%;
+            top: 20%;
+            max-width: 704px;
+            background: url("草地.png");
+            background-size: 100%;
+            border-radius: 3px;
+            width: 1004px;
+            height: 390px;
+            user-select:none;
+            cursor: url(槌.png),pointer;
+        }
+        body {
+            min-height: 100%;
+            background: yellowgreen;
+            font-family: 'Lato', sans-serif;
+            font-weight: 400;
+            color: #222;
+            font-size: 16px;
+            line-height: 28px;
+            padding-bottom: 50px;
+        }
+        .d0{
+            position: absolute;
+            left: 112px;
+            top:  40px;
+            z-index: 0;
+        }
+        .d1{
+            position: absolute;
+            left: 315px;
+            top:  40px;
+            z-index: 0;
+        }
+        .d2{
+            position: absolute;
+            left: 508px;
+            top:  40px;
+            z-index: 0;
+        }
+        .d3{
+            position: absolute;
+            left: 138px;
+            top:  128px;
+            z-index: 2;
+        }
+        .d4{
+            position: absolute;
+            left: 341px;
+            top:  128px;
+            z-index: 2;
+        }
+        .d5{
+            position: absolute;
+            left: 534px;
+            top:  128px;
+            z-index: 2;
+        }
+        .d6{
+            position: absolute;
+            left: 178px;
+            top:  226px;
+            z-index: 4;
+
+        }
+        .d7{
+            position: absolute;
+            left: 384px;
+            top:  226px;
+            z-index: 4;
+        }
+        .d8{
+            position: absolute;
+            left: 578px;
+            top:  226px;
+            z-index: 4;
+        }
+
+        p,span{
+            margin: 0%;
+            padding: 0%;
+        }
+        .hide1{
+            position: absolute;
+            left: 0%;
+            top:  163px;
+            z-index: 1;
+        }
+        .hide2{
+            position: absolute;
+            left: 0%;;
+            top:  250px;
+            z-index: 3;
+        }
+        .hide3{
+            position: absolute;
+            left: 0%;;
+            top:  345px;
+            z-index: 5;
+        }
+        .hide4{
+            position: absolute;
+            left: 0%;
+            top:  429px;
+            z-index: 6;
+        }
+        button:hover{
+            cursor: pointer;
+        }
+        .bot{
+            position: absolute;
+            left: 43%;
+            bottom: 80px;
+            z-index: 10;
+        }
+        .gt{
+            position: absolute;
+            left: 45%;
+            top: 30px;
+            border-style: none;
+            border-color: DarkGreen;
+            font-size: 20px;
+            background-color: LightCyan;
+            color: DarkGreen;
+            border-radius: 10px;
+        }
+        .sc{
+            position: absolute;
+            left: 45%;
+            top: 100px;
+        }
+        .life{
+            width: 30px;
+            margin-left: 10px;
+        }
+        button{
+            cursor: pointer;
+            color: DarkGreen;
+            background-color: LightCyan;
+            border-style: none;
+            border-radius: 10px;
+            box-shadow: 0 6px #999;
+            width: 70px;
+            height: 25px;
+            z-index: 10;
+        }
+        button:hover{
+            background-color: #FFFFBB;
+        }
+        button:active{
+            background-color: #FFFFBB;
+            box-shadow: 0 2px #666;
+            transform: translateY(4px);
+        }
+        .quit{
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+        .leave span {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            transition: 0.5s;
+        }
+        .leave span:after {
+            content: '«';
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            left: -20px;
+            transition: 0.5s;
+        }
+        .leave:hover span {
+            padding-left: 15px;
+        }
+        .leave:hover span:after {
+            opacity: 1;
+            left: 0;
+        }
+        
+    </style>
+    <script>
+
+        cat=new Audio();
+        cat.src="cat.mp3";
+        dog=new Audio();
+        dog.src="dog.mp3";
+        mouse=new Audio();
+        mouse.src="mouse.mp3";
+        var role=["blank","老鼠","blank","狗勾","blank","老鼠","blank","貓貓","blank","老鼠","blank"];
+        var game_time=60;//遊戲總時長
+        var game_start;//遊戲開始時間
+        var djs_span;//顯示倒計時
+        var id;//計時器id
+        var game_djs;//遊戲倒計時
+        var isZT = false;//判斷是否為暫停,false表示未點選暫停
+        var zt_time;//暫停時的倒計時值
+        var jx_id;//繼續遊戲的倒計時id
+        var startBtn;//遊戲開始按鈕   
+        var stopact=true; 
+        var score=0;//得分
+        var life=3;//生命值
+        var point= localStorage.getItem("mouse_point");//總積分
+
+        
+        function hole(){
+            //up down
+            intervalid= setInterval(function(){
+                if(stopact==true)return;
+                let index = Math.floor(Math.random() * 11);
+                var show1=document.getElementById("p0");
+                show1.setAttribute("src",role[index]+".png");
+                show1.setAttribute("name",role[index]);
+                
+                var show2=document.getElementById("p1");
+                index = Math.floor(Math.random() * 11);
+                show2.setAttribute("src",role[index]+".png");
+                show2.setAttribute("name",role[index]);
+                
+                var show3=document.getElementById("p2");
+                index = Math.floor(Math.random() * 11);
+                show3.setAttribute("src",role[index]+".png");
+                show3.setAttribute("name",role[index]);
+                
+                var show4=document.getElementById("p3");
+                index = Math.floor(Math.random() * 11);
+                show4.setAttribute("src",role[index]+".png");
+                show4.setAttribute("name",role[index]);
+                
+                var show5=document.getElementById("p4");
+                index = Math.floor(Math.random() * 11);
+                show5.setAttribute("src",role[index]+".png");
+                show5.setAttribute("name",role[index]);
+                
+                var show6=document.getElementById("p5");
+                index = Math.floor(Math.random() * 11);
+                show6.setAttribute("src",role[index]+".png");
+                show6.setAttribute("name",role[index]);
+                
+                var show7=document.getElementById("p6");
+                index = Math.floor(Math.random() * 11);
+                show7.setAttribute("src",role[index]+".png");
+                show7.setAttribute("name",role[index]);
+                
+                var show8=document.getElementById("p7");
+                index = Math.floor(Math.random() * 11);
+                show8.setAttribute("src",role[index]+".png");
+                show8.setAttribute("name",role[index]);
+                
+                var show9=document.getElementById("p8");
+                index = Math.floor(Math.random() * 11);
+                show9.setAttribute("src",role[index]+".png");
+                show9.setAttribute("name",role[index]);
+                
+                $("#p0").animate({"marginTop":0+"px"},function(){
+                    timeId2= setTimeout(function(){
+                    $("#p0").animate({"marginTop":120+"px"});
+                },1000);        
+                }); 
+                $("#p1").animate({"marginTop":0+"px"},function(){
+                    timeId2= setTimeout(function(){
+                    $("#p1").animate({"marginTop":120+"px"});
+                },1000);        
+                });
+                $("#p2").animate({"marginTop":0+"px"},function(){
+                    timeId2= setTimeout(function(){
+                    $("#p2").animate({"marginTop":120+"px"});
+                },1000);        
+                });
+                $("#p3").animate({"marginTop":0+"px"},function(){
+                    timeId2= setTimeout(function(){
+                    $("#p3").animate({"marginTop":120+"px"});
+                },1000);        
+                });
+                $("#p4").animate({"marginTop":0+"px"},function(){
+                    timeId2= setTimeout(function(){
+                    $("#p4").animate({"marginTop":120+"px"});
+                },1000);        
+                });
+                $("#p5").animate({"marginTop":0+"px"},function(){
+                    timeId2= setTimeout(function(){
+                    $("#p5").animate({"marginTop":120+"px"});
+                },1000);        
+                });
+                $("#p6").animate({"marginTop":0+"px"},function(){
+                    timeId2= setTimeout(function(){
+                    $("#p6").animate({"marginTop":120+"px"});
+                },1000);        
+                });
+                $("#p7").animate({"marginTop":0+"px"},function(){
+                    timeId2= setTimeout(function(){
+                    $("#p7").animate({"marginTop":120+"px"});
+                },1000);        
+                });
+                $("#p8").animate({"marginTop":0+"px"},function(){
+                    timeId2= setTimeout(function(){
+                    $("#p8").animate({"marginTop":120+"px"});
+                },1000);        
+                });
+
+                //為什麼你不行?,會壞掉ˋˊ
+                /*
+                $("img[id^='p']").animate({"marginTop":0+"px"},function(){
+                    timeId2= setTimeout(function(){
+                    $("img[id^='p']").animate({"marginTop":120+"px"});
+                },1000);        
+                });*/
+                
+            },3000);
+            
+        }
+        
+        function start(){
+            djs_span = document.getElementById("djs");
+            //暫停遊戲
+            var zt = document.getElementById("zt");
+            //開始遊戲
+            hole();
+            startBtn = document.getElementById("btn");
+            startBtn.onclick = function(){
+                stopact=false;
+                clearTimeout(jx_id);
+                if(isZT){
+                    var reset = confirm("您的遊戲正在進行中,確定要重新開始嗎?");
+
+                    if(reset){
+                        zt.textContent = "暫停遊戲";
+                        isZT = false;
+                        stopact=false;
+                    }else{
+                        stopact=true;
+                        return;
+                    }
+                }
+                //記錄遊戲開始時間
+                game_start = new Date();
+                //禁用開始按鈕
+                startBtn.disabled = true;
+                startBtn.style.display="none";
+                djs();
+            }
+            //停止遊戲
+            document.getElementById("stop").onclick = function(){
+                //還原開始按鈕
+                startBtn.disabled = false;
+                startBtn.style.display="inline";
+                game_stop();
+
+            }
+            zt.onclick = function(){
+                game_zt();
+                if(isZT){
+                    //點選繼續按鈕
+                    zt.textContent = "暫停遊戲";
+                    isZT = false;
+                    stopact=false;
+                    //禁用開始按鈕
+                    startBtn.disabled = true;
+                    //記錄繼續遊戲開始時間
+                    game_start = new Date();
+                    game_jx();
+                    
+                }else{
+                    //點選暫停按鈕
+                    zt.textContent = "繼續遊戲";
+                    isZT = true;
+                    stopact=true;
+                    //還原開始按鈕
+                    startBtn.disabled = false;
+                    //記錄暫停時間
+                    zt_time = game_djs;
+                    game_zt();
+                }
+            }
+        }
+
+        //倒計時方法
+         function djs(){
+
+            //獲取遊戲進行時
+            var playing = new Date();
+
+            game_djs = game_time - parseInt((playing - game_start)/1000);
+
+            djs_span.innerHTML = game_djs;
+
+            id = setTimeout("djs()",1000);//步長
+
+            //遊戲結束
+            if(game_djs<1 ||life<=0){
+                stopact=true;
+                clearTimeout(id);
+                alert("遊戲結束");
+                startBtn.disabled = false;
+                startBtn.style.display="inline";
+                game_stop();
+            }
+
+        }
+
+        //暫停遊戲
+        function game_zt(){
+            clearTimeout(id);
+            clearTimeout(jx_id);
+        }
+
+        //繼續遊戲
+        function game_jx(){
+            //獲取遊戲進行時
+            var playing = new Date();
+            game_djs = zt_time - parseInt((playing - game_start)/1000);
+            djs_span.innerHTML = game_djs;
+            jx_id = setTimeout("game_jx()",1000);//步長
+
+            //遊戲結束
+            if(game_djs<1 ||life<=0){
+                stopact=true;
+                clearTimeout(jx_id);
+                alert("遊戲結束");
+                game_stop();
+            }
+        }
+
+        //遊戲結束
+        function game_stop(){
+            if(score<0) score=0;
+            if(parseInt(point)){
+                point=parseInt(point)+score;
+            }else point+=score;
+            isZT=false;
+            stopact=true;
+            clearTimeout(id);
+            clearTimeout(jx_id);
+            game_djs = 0;
+            djs_span.innerHTML = game_djs;
+            game_time=60;
+            score=0;
+            life=3;
+            var show_score=document.getElementById("score");
+            show_score.innerHTML=score;
+            var life1=document.getElementById("life1");
+            var life2=document.getElementById("life2");
+            var life3=document.getElementById("life3");
+            life1.setAttribute("src","heart_red.png");
+            life2.setAttribute("src","heart_red.png");
+            life3.setAttribute("src","heart_red.png");
+            console.log(point);
+            if(localStorage.getItem("mouse_user")!=null) localStorage.setItem("mouse_point",point);
+        }
+
+        function set(p,n){
+            var show_score=document.getElementById("score");
+            var idd=document.getElementById(p);
+            if(n!="blank"){
+                idd.setAttribute("src","被打"+n+".png");
+                if(n==="貓貓"){
+                    cat.play();
+                    score-=50;
+                }else if(n==="狗勾"){
+                    dog.play();
+                    life-=1;
+                }else{
+                    mouse.play();
+                    score+=30;
+                }
+            }
+            show_score.innerHTML=score;
+            if(life==2){
+                var life1=document.getElementById("life1");
+                life1.setAttribute("src","heart_gray.png");
+            }else if(life==1){
+                var life1=document.getElementById("life1");
+                var life2=document.getElementById("life2");
+                life1.setAttribute("src","heart_gray.png");
+                life2.setAttribute("src","heart_gray.png");
+            }else if(life==0){
+                var life1=document.getElementById("life1");
+                var life2=document.getElementById("life2");
+                var life3=document.getElementById("life3");
+                life1.setAttribute("src","heart_gray.png");
+                life2.setAttribute("src","heart_gray.png");
+                life3.setAttribute("src","heart_gray.png");
+            }
+        }
+
+        
+        window.addEventListener("load",start,false);
+    </script>
+</head>
+<body>
+    <div class="quit"><a href="index.html" style="color:DarkGreen"><button class="leave"><span>離開</span></a></div>
+    <div class="gt">遊戲倒計時:<span id="djs">60</span>秒</div>  
+    <div class="sc">
+        <span>
+            <img src="heart_red.png" class="life"  id="life3">
+            <img src="heart_red.png" class="life"  id="life2">
+            <img src="heart_red.png" class="life"  id="life1">
+        </span>得分:<span id="score">0</span>
+    </div>
+
+    <div class="container">
+        <div>
+            <span class="d0"><img src="blank.png" style="width: 120px" id="p0" name="blank" onclick="set('p0',name)"></span>
+            <span class="d1"><img src="blank.png" style="width: 120px" id="p1" name="blank" onclick="set('p1',name)"></span>
+            <span class="d2"><img src="blank.png" style="width: 120px" id="p2" name="blank" onclick="set('p2',name)"></span>
+        </div>
+        <div>
+            <img src="h1.png" style="width: 100%;" class="hide1">
+        </div>
+        <div>
+            <span class="d3"><img src="blank.png" style="width: 120px" id="p3" name="blank" onclick="set('p3',name)"></span>
+            <span class="d4"><img src="blank.png" style="width: 120px" id="p4" name="blank" onclick="set('p4',name)"></span>
+            <span class="d5"><img src="blank.png" style="width: 120px" id="p5" name="blank" onclick="set('p5',name)"></span>
+        </div>
+        <div>
+            <img src="h2.png" style="width: 100%;" class="hide2">
+        </div>
+        <div>
+            <span class="d6"><img src="blank.png" style="width: 120px" id="p6" name="blank" onclick="set('p6',name)"></span>
+            <span class="d7"><img src="blank.png" style="width: 120px" id="p7" name="blank" onclick="set('p7',name)"></span>
+            <span class="d8"><img src="blank.png" style="width: 120px" id="p8" name="blank" onclick="set('p8',name)"></span>
+        </div>
+        <div>
+            <img src="h3.png" style="width: 100%;" class="hide3">
+        </div>
+        
+        
+        
+        <img src="h4.jpg" style="width: 100%;" class="hide4">
+        
+    </div>
+    <div class="bot">
+        <button id="btn">開始遊戲</button>
+        <button id="zt">暫停遊戲</button>
+        <button id="stop">停止遊戲</button>
+    </div>
+    
+</body>
+</html>

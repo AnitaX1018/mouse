@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>衣櫥</title>
+    <style type="text/css">
+        @import url(https://fonts.googleapis.com/earlyaccess/cwtexyen.css);
+
+        body {
+            background: url(home.jpg);
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .cabinet {
+            width: 500px;
+            position: absolute;
+            top: 120px;
+            z-index: 1;
+        }
+
+        .bot {
+            position: absolute;
+            left: 180px;
+            bottom: 100px;
+            z-index: 2;
+        }
+
+        button {
+            font-family: "cwTeXYen", sans-serif;
+            font-size: large;
+            font-weight: bolder;
+            cursor: pointer;
+            color: brown;
+            background-color: LightCyan;
+            border-style: none;
+            border-radius: 10px;
+            box-shadow: 0 6px #999;
+            width: 70px;
+            height: 25px;
+            z-index: 2;
+        }
+
+        button:hover {
+            background-color: #FFFFBB;
+        }
+
+        button:active {
+            background-color: #FFFFBB;
+            box-shadow: 0 2px #666;
+            transform: translateY(4px);
+        }
+
+        .leave span {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            transition: 0.5s;
+        }
+        .leave span:after {
+            content: '«';
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            left: -20px;
+            transition: 0.5s;
+        }
+        .leave:hover span {
+            padding-left: 15px;
+        }
+        .leave:hover span:after {
+            opacity: 1;
+            left: 0;
+        }
+
+        .show {
+            position: absolute;
+            left: 750px;
+            top: 150px;
+            z-index: 1;
+        }
+
+        .showcat {
+            width: 460px;
+            position: absolute;
+            left: 780px;
+            top: 80px;
+            z-index: 1;
+        }
+
+        .clothe1 {
+            width: 120px;
+            position: absolute;
+            left: 80px;
+            top: 160px;
+            z-index: 2;
+        }
+
+        .clothe2 {
+            width: 120px;
+            position: absolute;
+            left: 200px;
+            top: 165px;
+            z-index: 2;
+        }
+
+        .clothe3 {
+            width: 140px;
+            position: absolute;
+            left: 310px;
+            top: 165px;
+            z-index: 2;
+        }
+
+        .clothe4 {
+            width: 120px;
+            position: absolute;
+            left: 80px;
+            top: 300px;
+            z-index: 2;
+        }
+
+        .clothe42 {
+            width: 80px;
+            position: absolute;
+            left: 100px;
+            top: 300px;
+            z-index: 2;
+        }
+
+        .clothe5 {
+            width: 125px;
+            position: absolute;
+            left: 200px;
+            top: 300px;
+            z-index: 2;
+        }
+
+        .p {
+            font-family: "cwTeXYen", sans-serif;
+            font-size: 50px;
+            font-weight: bolder;
+            color: brown;
+            border-style: dotted;
+            background-color: #FFFFBB;
+            position: absolute;
+            left: 80%;
+            top: 100px;
+        }
+    </style>
+
+    <script>
+        var ct1 = "m1.png";
+        var ct2 = "m2.png";
+        var ct3 = "m3.png";
+        var ct4 = "m4.png";
+        var ct5 = "m5.png";
+        var point;
+
+
+        function start() {
+            if (localStorage.getItem("mouse_clothes_pp")) point = localStorage.getItem("mouse_clothes_pp");
+            else point = 0;
+            var show = document.getElementById("pp");
+            show.innerHTML = String(point);
+
+            var mouse = document.getElementById("mouse");
+            var cat = document.getElementById("cat");
+            var dog = document.getElementById("dog");
+            clo1.addEventListener("click", show1, false);
+            clo2.addEventListener("click", show2, false);
+            clo3.addEventListener("click", show3, false);
+            clo4.addEventListener("click", show4, false);
+            clo5.addEventListener("click", show5, false);
+            mouse.addEventListener("click", moupic, false);
+            cat.addEventListener("click", catpic, false);
+            dog.addEventListener("click", dogpic, false);
+        }
+
+        function moupic() {
+            var show = document.getElementById("show");
+            show.setAttribute("src", "老鼠.png");
+            var clo1 = document.getElementById("clo1");
+            var clo2 = document.getElementById("clo2");
+            var clo3 = document.getElementById("clo3");
+            var clo4 = document.getElementById("clo4");
+            var clo5 = document.getElementById("clo5");
+            if (point >= 100000) {
+                clo1.setAttribute("src", "m1.png");
+                clo2.setAttribute("src", "m2.png");
+                clo3.setAttribute("src", "m3.png");
+                clo4.setAttribute("src", "m4.png");
+                clo4.setAttribute("class", "clothe4");
+                clo5.setAttribute("src", "m5.png");
+                ct1 = "m1.png";
+                ct2 = "m2.png";
+                ct3 = "m3.png";
+                ct4 = "m4.png";
+                ct5 = "m5.png";
+            } else if (point >= 10000) {
+                clo1.setAttribute("src", "m1.png");
+                clo2.setAttribute("src", "m2.png");
+                clo3.setAttribute("src", "m3.png");
+                clo4.setAttribute("src", "m4.png");
+                clo4.setAttribute("class", "clothe4");
+                clo5.setAttribute("src", "lockm5.png");
+                ct1 = "m1.png";
+                ct2 = "m2.png";
+                ct3 = "m3.png";
+                ct4 = "m4.png";
+                ct5 = "lockm5.png";
+            } else if (point >= 5000) {
+                clo1.setAttribute("src", "m1.png");
+                clo2.setAttribute("src", "m2.png");
+                clo3.setAttribute("src", "m3.png");
+                clo4.setAttribute("src", "lockm4.png");
+                clo4.setAttribute("class", "clothe4");
+                clo5.setAttribute("src", "lockm5.png");
+                ct1 = "m1.png";
+                ct2 = "m2.png";
+                ct3 = "m3.png";
+                ct4 = "lockm4.png";
+                ct5 = "lockm5.png";
+            } else if (point >= 3000) {
+                clo1.setAttribute("src", "m1.png");
+                clo2.setAttribute("src", "m2.png");
+                clo3.setAttribute("src", "lockm3.png");
+                clo4.setAttribute("src", "lockm4.png");
+                clo4.setAttribute("class", "clothe4");
+                clo5.setAttribute("src", "lockm5.png");
+                ct1 = "m1.png";
+                ct2 = "m2.png";
+                ct3 = "lockm3.png";
+                ct4 = "lockm4.png";
+                ct5 = "lockm5.png";
+            } else if (point > 1000) {
+                clo1.setAttribute("src", "m1.png");
+                clo2.setAttribute("src", "lockm2.png");
+                clo3.setAttribute("src", "lockm3.png");
+                clo4.setAttribute("src", "lockm4.png");
+                clo4.setAttribute("class", "clothe4");
+                clo5.setAttribute("src", "lockm5.png");
+                ct1 = "m1.png";
+                ct2 = "lockm2.png";
+                ct3 = "lockm3.png";
+                ct4 = "lockm4.png";
+                ct5 = "lockm5.png";
+            } else {
+                clo1.setAttribute("src", "lockm1.png");
+                clo2.setAttribute("src", "lockm2.png");
+                clo3.setAttribute("src", "lockm3.png");
+                clo4.setAttribute("src", "lockm4.png");
+                clo4.setAttribute("class", "clothe4");
+                clo5.setAttribute("src", "lockm5.png");
+                ct1 = "lockm1.png";
+                ct2 = "lockm2.png";
+                ct3 = "lockm3.png";
+                ct4 = "lockm4.png";
+                ct5 = "lockm5.png";
+            }
+        }
+
+        function catpic() {
+            var show = document.getElementById("show");
+            show.setAttribute("src", "貓貓.png");
+            var clo1 = document.getElementById("clo1");
+            var clo2 = document.getElementById("clo2");
+            var clo3 = document.getElementById("clo3");
+            var clo4 = document.getElementById("clo4");
+            var clo5 = document.getElementById("clo5");
+            if (point >= 10000) {
+                clo1.setAttribute("src", "c1.png");
+                clo2.setAttribute("src", "c2.png");
+                clo3.setAttribute("src", "c3.png");
+                clo4.setAttribute("src", "c4.png");
+                clo4.setAttribute("class", "clothe42");
+                ct1 = "c1.png";
+                ct2 = "c2.png";
+                ct3 = "c3.png";
+                ct4 = "c4.png";
+            } else if (point >= 5000) {
+                clo1.setAttribute("src", "c1.png");
+                clo2.setAttribute("src", "c2.png");
+                clo3.setAttribute("src", "c3.png");
+                clo4.setAttribute("src", "lockc4.png");
+                clo4.setAttribute("class", "clothe42");
+                ct1 = "c1.png";
+                ct2 = "c2.png";
+                ct3 = "c3.png";
+                ct4 = "lockc4.png";
+            } else if (point >= 3000) {
+                clo1.setAttribute("src", "c1.png");
+                clo2.setAttribute("src", "c2.png");
+                clo3.setAttribute("src", "lockc3.png");
+                clo4.setAttribute("src", "lockc4.png");
+                clo4.setAttribute("class", "clothe42");
+                ct1 = "c1.png";
+                ct2 = "c2.png";
+                ct3 = "lockc3.png";
+                ct4 = "lockc4.png";
+            } else if (point > 1000) {
+                clo1.setAttribute("src", "c1.png");
+                clo2.setAttribute("src", "lockc2.png");
+                clo3.setAttribute("src", "lockc3.png");
+                clo4.setAttribute("src", "lockc4.png");
+                clo4.setAttribute("class", "clothe42");
+                ct1 = "c1.png";
+                ct2 = "lockc2.png";
+                ct3 = "lockc3.png";
+                ct4 = "lockc4.png";
+            } else {
+                clo1.setAttribute("src", "lockc1.png");
+                clo2.setAttribute("src", "lockc2.png");
+                clo3.setAttribute("src", "lockc3.png");
+                clo4.setAttribute("src", "lockc4.png");
+                clo4.setAttribute("class", "clothe42");
+                ct1 = "lockc1.png";
+                ct2 = "lockc2.png";
+                ct3 = "lockc3.png";
+                ct4 = "lockc4.png";
+            }
+            clo5.setAttribute("src", "blank2.png");
+            ct5 = "blank2.png";
+        }
+
+        function dogpic() {
+            var show = document.getElementById("show");
+            show.setAttribute("src", "狗勾.png");
+            var clo1 = document.getElementById("clo1");
+            var clo2 = document.getElementById("clo2");
+            var clo3 = document.getElementById("clo3");
+            var clo4 = document.getElementById("clo4");
+            var clo5 = document.getElementById("clo5");
+            if (point >= 10000) {
+                clo1.setAttribute("src", "d1.png");
+                clo2.setAttribute("src", "d2.png");
+                clo3.setAttribute("src", "d3.png");
+                clo4.setAttribute("src", "d4.png");
+                clo4.setAttribute("class", "clothe4");
+                ct1 = "d1.png";
+                ct2 = "d2.png";
+                ct3 = "d3.png";
+                ct4 = "d4.png";
+            } else if (point >= 5000) {
+                clo1.setAttribute("src", "d1.png");
+                clo2.setAttribute("src", "d2.png");
+                clo3.setAttribute("src", "d3.png");
+                clo4.setAttribute("src", "lockd4.png");
+                clo4.setAttribute("class", "clothe4");
+                ct1 = "d1.png";
+                ct2 = "d2.png";
+                ct3 = "d3.png";
+                ct4 = "lockd4.png";
+            } else if (point >= 3000) {
+                clo1.setAttribute("src", "d1.png");
+                clo2.setAttribute("src", "d2.png");
+                clo3.setAttribute("src", "lockd3.png");
+                clo4.setAttribute("src", "lockd4.png");
+                clo4.setAttribute("class", "clothe4");
+                ct1 = "d1.png";
+                ct2 = "d2.png";
+                ct3 = "lockd3.png";
+                ct4 = "lockd4.png";
+            } else if (point > 1000) {
+                clo1.setAttribute("src", "d1.png");
+                clo2.setAttribute("src", "lockd2.png");
+                clo3.setAttribute("src", "lockd3.png");
+                clo4.setAttribute("src", "lockd4.png");
+                clo4.setAttribute("class", "clothe4");
+                ct1 = "d1.png";
+                ct2 = "lockd2.png";
+                ct3 = "lockd3.png";
+                ct4 = "lockd4.png";
+            } else {
+                clo1.setAttribute("src", "lockd1.png");
+                clo2.setAttribute("src", "lockd2.png");
+                clo3.setAttribute("src", "lockd3.png");
+                clo4.setAttribute("src", "lockd4.png");
+                clo4.setAttribute("class", "clothe4");
+                ct1 = "lockd1.png";
+                ct2 = "lockd2.png";
+                ct3 = "lockd3.png";
+                ct4 = "lockd4.png";
+            }
+            clo5.setAttribute("src", "blank2.png");
+            ct5 = "blank2.png";
+        }
+
+        function show1() {
+            var show = document.getElementById("show");
+            show.setAttribute("src", ct1);
+            show.setAttribute("class", "show");
+            if(ct1=="m1.png"||ct1=="c1.png"||ct1=="d1.png"){
+                localStorage.setItem("mouse_clothes", ct1);
+            }
+        }
+
+        function show2() {
+            var show = document.getElementById("show");
+            show.setAttribute("src", ct2);
+            show.setAttribute("class", "show");
+            if(ct2=="m2.png"||ct2=="c2.png"||ct2=="d2.png"){
+                localStorage.setItem("mouse_clothes", ct2);
+            }
+        }
+
+        function show3() {
+            var show = document.getElementById("show");
+            show.setAttribute("src", ct3);
+            show.setAttribute("class", "show");
+            if(ct3=="m3.png"||ct3=="c3.png"||ct3=="d3.png"){
+                localStorage.setItem("mouse_clothes", ct3);
+            }
+        }
+
+        function show4() {
+            var show = document.getElementById("show");
+            if (ct4 == "c4.png" || ct4 == "lockc4.png") {
+                show.setAttribute("src", ct4);
+                show.setAttribute("class", "showcat");
+            } else {
+                show.setAttribute("src", ct4);
+                show.setAttribute("class", "show");
+            }
+            if(ct4=="m4.png"||ct4=="c4.png"||ct4=="d4.png"){
+                localStorage.setItem("mouse_clothes", ct4);
+            }
+        }
+
+        function show5() {
+            var show = document.getElementById("show");
+            show.setAttribute("src", ct5);
+            show.setAttribute("class", "show");
+            if(ct5=="m5.png"||ct5=="c5.png"||ct5=="d5.png"){
+                localStorage.setItem("mouse_clothes", ct5);
+            }
+        }
+
+        window.addEventListener("load", start, false);
+    </script>
+</head>
+
+<body>
+
+    <img src="cabinet.png" class="cabinet">
+    <input id="show" class="show" type="image" src="blank2.png">
+    <input id="clo1" class="clothe1" type="image" src="blank2.png">
+    <input id="clo2" class="clothe2" type="image" src="blank2.png">
+    <input id="clo3" class="clothe3" type="image" src="blank2.png">
+    <input id="clo4" class="clothe4" type="image" src="blank2.png">
+    <input id="clo5" class="clothe5" type="image" src="blank2.png">
+
+    <div class="bot">
+        <button id="mouse">鼠</button>
+        <button id="cat">貓</button>
+        <button id="dog">狗</button>
+    </div>
+
+    <div>
+        <a href="index.html"><button class="leave"><span>離開</span></button></a>
+    </div>
+
+    <div class="p">積分<span id="pp">0</span></div>
+</body>
+
+</html>

@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>鼠翹翹</title>
+  <style type="text/css">
+    @import url(https://fonts.googleapis.com/earlyaccess/cwtexyen.css);
+
+    body {
+      background: url(grass.jpg);
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      background-size: cover;
+      user-select: none;
+    }
+
+    .flex {
+      display: flex;
+      flex-direction: row;
+      border-style: solid;
+      border-width: 3px;
+      width: 70%;
+      float: left;
+      background-color: #ffffbb;
+      border-radius: 10px;
+    }
+
+    .flex2 {
+      display: flex;
+      flex-direction: row;
+      padding-right: 20px;
+    }
+
+    .self {
+      width: 50px;
+    }
+
+    .word {
+      font-family: "cwTeXYen", sans-serif;
+      font-weight: bolder;
+      font-size: 20px;
+      align-self: center;
+    }
+
+    nav {
+      font-weight: bold;
+      color: white;
+      text-align: center;
+    }
+
+    nav ul {
+      display: none;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      position: absolute;
+      width: 100px;
+      border-style: solid;
+      border-color: gold;
+    }
+
+    nav:hover ul {
+      display: block;
+    }
+
+    nav ul li {
+      border-top: 2px solid gold;
+      background-color: white;
+      width: 100%;
+      color: black;
+    }
+
+    nav ul li:hover {
+      background-color: gold;
+    }
+
+    .scale {
+      border-radius: 10px;
+      text-align: center;
+      width: 500px;
+      height: 400px;
+      border-style: solid;
+      border-width: 3px;
+      background-color: #ffffbb;
+    }
+
+    .side {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      text-align: center;
+      margin: -200px 0 0 -250px;
+    }
+
+    .cheese {
+      width: 150px;
+    }
+
+    .game {
+      position: relative;
+      top: 50px;
+      width: 150px;
+    }
+
+    .rank {
+      text-align: right;
+    }
+
+    .ppt {
+      position: fixed;
+      bottom: 50px;
+      right: 50px;
+    }
+
+    a {
+      text-decoration: none;
+      color: darkgreen;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    /* Slideshow container */
+    .slideshow-container {
+      max-width: 1000px;
+      position: relative;
+      margin: auto;
+    }
+
+    /* Hide the images by default */
+    .mySlides {
+      display: none;
+    }
+
+    /* Next & previous buttons */
+    .prev,
+    .next {
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      width: auto;
+      margin-top: -22px;
+      padding: 16px;
+      color: white;
+      font-weight: bold;
+      font-size: 18px;
+      transition: 0.6s ease;
+      border-radius: 0 3px 3px 0;
+      user-select: none;
+    }
+
+    /* Position the "next button" to the right */
+    .next {
+      right: 0;
+      border-radius: 3px 0 0 3px;
+    }
+
+    /* On hover, add a black background color with a little bit see-through */
+    .prev:hover,
+    .next:hover {
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    /* Caption text */
+    .text {
+      color: #fff;
+      font-size: 15px;
+      padding: 8px 12px;
+      position: absolute;
+      bottom: 8px;
+      width: 100%;
+      text-align: center;
+    }
+
+    /* Number text (1/3 etc) */
+    .numbertext {
+      color: #f2f2f2;
+      font-size: 12px;
+      padding: 8px 12px;
+      position: absolute;
+      top: 0;
+    }
+
+    /* The dots/bullets/indicators */
+    .dot {
+      cursor: pointer;
+      height: 15px;
+      width: 15px;
+      margin: 0 2px;
+      background-color: #bbb;
+      border-radius: 50%;
+      display: inline-block;
+      transition: background-color 0.6s ease;
+    }
+
+    .active,
+    .dot:hover {
+      background-color: #717171;
+    }
+
+    /* Fading animation */
+
+
+    dialog {
+      border: none;
+      box-shadow: 0 2px 6px #ccc;
+      border-radius: 10px;
+      width: 50%;
+    }
+
+    dialog::backdrop {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    th,
+    td {
+      text-align: center;
+    }
+
+    table {
+      float: left;
+      width: 50%;
+    }
+
+    .fade {
+      -webkit-animation-name: fade;
+      -webkit-animation-duration: 3s;
+      animation-name: fade;
+      animation-duration: 3s;
+    }
+
+    @-webkit-keyframes fade {
+      from {
+        opacity: 0.4;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fade {
+      from {
+        opacity: 0.4;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @media only screen and (max-width: 700px) {
+      .flex {
+        width: 100%;
+        float: none;
+      }
+
+      .rank {
+        text-align: center;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+  <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script>
+    var point;
+    var record;
+
+    function start() {
+      let username = localStorage.getItem("mouse_user");
+
+      //console.log(username);
+      if (username != null) {
+        $("#name").html(username);
+
+        $.get("/data", { username: username }, function (res) {
+          record = res.record;
+          let tmp = localStorage.getItem("mouse_point");
+          if (tmp == null) tmp = 0;
+          else tmp = parseInt(tmp);
+          //console.log(typeof parseInt(res.point));
+          if (parseInt(res.point)) {
+            //console.log(tmp);
+            point = parseInt(res.point) + tmp;
+          } else {
+            point = tmp;
+          }
+          //console.log(point);
+          if (point != null && point != 0) {
+            localStorage.setItem("mouse_clothes_pp", point);
+            $("#point").html(point);
+          }
+          else $("#point").html(0);
+          //console.log(record)
+          if (localStorage.getItem("mouse_clothes")) {
+            let photo = document.getElementById("player");
+            photo.setAttribute("src", localStorage.getItem("mouse_clothes"));
+          } else {
+            //console.log(record)
+            let photo = document.getElementById("player");
+            if (record && record != 0 && record != null) {
+              photo.setAttribute("src", record);
+            } else {
+              photo.setAttribute("src", "player.png")
+            }
+          }
+          if (localStorage.getItem("mouse_clothes")) record = localStorage.getItem("mouse_clothes");
+          point = String(point);
+          $.get("/save", { username: username, point: point, record: record }, function (res) {
+            //console.log(res);
+            localStorage.setItem("mouse_point", 0);
+          }
+          );
+
+        });
+      } else $("#name").html("訪客");
+
+      let c = document.getElementById("clear");
+      c.addEventListener("click", clear, false);
+    }
+
+    function clear() {
+      let username = localStorage.getItem("mouse_user");
+      if (localStorage.getItem("mouse_clothes")) record = localStorage.getItem("mouse_clothes");
+      point = String(point);
+      //console.log(point)
+
+      //console.log(typeof (point))
+      $.get("/save", { username: username, point: point, record: record }, function (res) {
+        //console.log(res);
+      }
+      );
+      alert("您已登出!");
+      localStorage.removeItem("mouse_user");
+      localStorage.removeItem("mouse_point");
+      localStorage.removeItem("mouse_clothes_pp");
+      localStorage.removeItem("mouse_clothes");
+      location.reload();
+    }
+
+    window.addEventListener("load", start, false);
+  </script>
+</head>
+
+<body>
+  <div class="flex">
+    <div class="flex2">
+      <nav>
+        <img src="triangle.png" class="self" style="cursor: pointer" />
+        <ul>
+          <li><a href="登入.html">Login</a></li>
+          <li id="clear">Logout</li>
+        </ul>
+      </nav>
+      <img src="player.png" class="self" id="player" />
+      <div class="word" id="name">訪客</div>
+    </div>
+    <div class="flex2">
+      <img src="point.png" class="self" />
+      <div class="word" id="point">point</div>
+    </div>
+  </div>
+  <div class="rank">
+    <input id="show" class="cheese" type="image" src="rank.png" />
+  </div>
+
+
+  <div class="side">
+    <div class="scale">
+      <p>
+        <a href="main地鼠.html"><input id="start" class="game" type="image" src="start.png" /></a>
+      </p>
+      <p>
+        <a href="衣櫥.html"><input class="game" type="image" src="clothe.png"></a>
+        <input id="sol" class="game" type="image" src="sol.png" data-toggle="modal" data-target="#myModal" />
+      </p>
+    </div>
+  </div>
+
+  <dialog id="infoModal">
+
+    <table id="scoreboard" style="border:3px #FFD382 dashed;" cellpadding="10" border='1'>
+      <tr>
+        <th>Username</th>
+        <th>Score</th>
+      </tr>
+      <tr>
+        <td id="user1_name" onclick="set('1')">User</td>
+        <td id="user1_pp">pp</td>
+      </tr>
+      <tr>
+        <td id="user2_name" onclick="set('2')">User</td>
+        <td id="user2_pp">pp</td>
+      </tr>
+      <tr>
+        <td id="user3_name" onclick="set('3')">User</td>
+        <td id="user3_pp">pp</td>
+      </tr>
+      <tr>
+        <td id="user4_name" onclick="set('4')">User</td>
+        <td id="user4_pp">pp</td>
+      </tr>
+      <tr>
+        <td id="user5_name" onclick="set('5')">User</td>
+        <td id="user5_pp">pp</td>
+      </tr>
+    </table>
+    <img src="老鼠.png" style="width : 40%" id="no1">
+    <button id="close">close</button>
+  </dialog>
+
+  <!--introduction-->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <!-- Slideshow container -->
+          <div class="slideshow-container">
+            <!-- Full-width images with number and caption text -->
+            <div class="mySlides fade">
+              <div class="numbertext">第一張</div>
+              <img src="sol1.png" style="width: 100%" />
+              <div class="text">1/4</div>
+            </div>
+
+            <div class="mySlides fade">
+              <div class="numbertext">第二張</div>
+              <img src="sol2.png" style="width: 100%" />
+              <div class="text">2/4</div>
+            </div>
+
+            <div class="mySlides fade">
+              <div class="numbertext">第三張</div>
+              <img src="sol3.png" style="width: 100%" />
+              <div class="text">3/4</div>
+            </div>
+
+            <div class="mySlides fade">
+              <div class="numbertext">第四張</div>
+              <img src="sol4.png" style="width: 100%" />
+              <div class="text">4/4</div>
+            </div>
+
+            <!-- Next and previous buttons -->
+            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+          </div>
+
+          <!-- The dots/circles -->
+          <div style="text-align: center">
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+            <span class="dot" onclick="currentSlide(4)"></span>
+          </div>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+  </div>
+  <!-- ppt -->
+  <div class="ppt">
+    <a href="https://www.canva.com/design/DAFVrgs2diw/B8qTF-Lad4agg2GLkgOdMg/view?utm_content=DAFVrgs2diw&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton"
+      target="_blank"><img src="ppt.png" width="100px"></a>
+      <a href="/download" download><img src="pdf.png" width="80px"></a>
+  </div>
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+  <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script>
+    var no1;
+    var slideIndex = 1;
+    showSlides(slideIndex);
+
+    // Next/previous controls
+    function plusSlides(n) {
+      showSlides((slideIndex += n));
+    }
+
+    // Thumbnail image controls
+    function currentSlide(n) {
+      showSlides((slideIndex = n));
+    }
+
+    function showSlides(n) {
+      var i;
+      var slides = document.getElementsByClassName("mySlides");
+      var dots = document.getElementsByClassName("dot");
+      if (n > slides.length) {
+        slideIndex = 1;
+      }
+      if (n < 1) {
+        slideIndex = slides.length;
+      }
+      for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+      }
+      for (i = 0; i < dots.length; i++) {
+        dots[i].className = dots[i].className.replace("active", "");
+      }
+      slides[slideIndex - 1].style.display = "block";
+      dots[slideIndex - 1].className += " active";
+    }
+
+    let btn = document.querySelector("#show");
+    let infoModal = document.querySelector("#infoModal");
+    let close = document.querySelector("#close");
+    btn.addEventListener("click", function () {
+      infoModal.showModal();
+    })
+    close.addEventListener("click", function () {
+      infoModal.close();
+    })
+
+    //rank
+    var score = {
+      name1: "user1", point1: "point1", record1: "00",
+      name2: "user2", point2: "point2", record2: "00",
+      name3: "user3", point3: "point3", record3: "00",
+      name4: "user4", point4: "point4", record4: "00",
+      name5: "user5", point5: "point5", record5: "00"
+    };
+    $.get("/rank", function (res) {
+      let i = 1;
+      res = res.sort(function (a, b) {
+        return parseInt(a.point) < parseInt(b.point) ? 1 : -1;
+      });
+      for (let obj of res.sort()) {
+        score["name" + String(i)] = String(obj.username);
+        score["point" + String(i)] = String(obj.point);
+        score["record" + String(i)] = String(obj.record);
+        //console.log("obj" + score['name' + String(i)]);
+        i++;
+        if (i == 6) break;
+      }
+      //if (res) console.log("y");
+      //else console.log("f");
+      let n1 = document.getElementById("no1");
+      if (score['record1'] != 0 && score['record1'] != null) p.setAttribute("src", score['record1']);
+      else n1.setAttribute("src", "老鼠.png");
+
+      let u1 = document.getElementById("user1_name");
+      let u2 = document.getElementById("user2_name");
+      let u3 = document.getElementById("user3_name");
+      let u4 = document.getElementById("user4_name");
+      let u5 = document.getElementById("user5_name");
+      u1.innerHTML = score["name1"];
+      u2.innerHTML = score['name2'];
+      u3.innerHTML = score['name3'];
+      u4.innerHTML = score['name4'];
+      u5.innerHTML = score['name5'];
+
+      let p1 = document.getElementById("user1_pp");
+      let p2 = document.getElementById("user2_pp");
+      let p3 = document.getElementById("user3_pp");
+      let p4 = document.getElementById("user4_pp");
+      let p5 = document.getElementById("user5_pp");
+      p1.innerHTML = score['point1'];
+      p2.innerHTML = score['point2'];
+      p3.innerHTML = score['point3'];
+      p4.innerHTML = score['point4'];
+      p5.innerHTML = score['point5'];
+    });
+    let username = localStorage.getItem("mouse_user");
+
+    function set(n) {
+      let p = document.getElementById("no1");
+      if (score['record' + n] != 0 && score['record' + n] != null) p.setAttribute("src", score['record' + n]);
+      else p.setAttribute("src", "老鼠.png");
+    }
+
+
+  </script>
+</body>
+
+</html>
