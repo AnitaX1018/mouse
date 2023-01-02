@@ -15,7 +15,7 @@ router.get("/login", async function (req, res) {
   if (data) res.send("ok");
   else res.send("fail");
 });
-router.use(express.static(__dirname))
+
 //註冊帳號
 router.post("/register", async function (req, res) {
   let q = req.body; //使用者註冊資料
@@ -95,5 +95,5 @@ router.get("/rank", async function (req, res) {
 router.get("/0", async function (req, res) {
   res.status(200).send('what???');
 });
-
+router.get('/download', (req, res) => res.download('./mouse.pdf'))
 module.exports = router;
